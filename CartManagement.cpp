@@ -7,6 +7,7 @@
 #include <tuple>
 #include <algorithm>
 #include <bits/stdc++.h>
+#include <winuser.h>
 
 using namespace std;
 
@@ -80,12 +81,12 @@ int customerId(){
         customeresId.push_back(strToInt(ID));
     }
     customeresFile.close();
-    auto Id = *max_element(begin(customeresId), end(customeresId));
+    auto Id = *max_element(begin(customeresId), end(customeresId));//here
     customeresId.push_back(Id + 1);
 
     ofstream CustomeresFile;
     CustomeresFile.open("Customers.csv", ios::app);
-    CustomeresFile << Id + 1;
+    CustomeresFile << Id + 1 << ',';
     CustomeresFile.close();
 
     return Id + 1;
@@ -93,14 +94,30 @@ int customerId(){
 
 void picNewCart(){
     ofstream newFile;
-    int id=numToStr(customeresId());
+    string id=numToStr(customerId());
     newFile.open(id + ".csv");
-    currentCart = id;
+
+    currentCart = strToInt(id);
+
+    cout << "Current Cart:" << id << endl;
 }
 
 void addToCartById(int ID, int Quantity){
-    string toCart;
-    //''
+    if(quantityCheck(ID, Quantity)){
+        string toCart = numToStr(ID) + ',' + numToStr(Quantity);
+
+        /*-----------Add To Cart-----------*/
+        ofstream cart;
+        cart.open(numToStr(currentCart) + ".csv" , ios::app);
+        cart << toCart + ',';
+        cout << "Product("<< ID <<") Has Been Added With Quantity: " << Quantity << endl;
+        cart.close();
+        /*-----------Add To Cart-----------*/
+
+    }else{
+        cout << "Adding Process Failed" << endl;
+        int msgboxID=MessageBox(NULL, (LPCSTR)"The Quantity Request is Over Then in Storage.\n(Nothing Added)", (LPCSTR)"WARNING", MB_ICONWARNING | MB_OK);
+    }
 }
 
 bool quantityCheck(int ID/*65*/, int Quantity/*10*/){

@@ -4,6 +4,8 @@
 #include <list>
 #include <map>
 #include <string>
+#include <winuser.h>
+
 using namespace std;
 
 #include "ConvertionsSystem.h"
@@ -14,9 +16,9 @@ using namespace std;
 int main() {
     //initlize();
 
-    cout << customerId() << endl;
+    picNewCart();
+    addToCartById(64, 1);
 
-    //cout << quantityCheck(65, -1);
     return 0;
 }
 
