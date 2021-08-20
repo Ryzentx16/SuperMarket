@@ -6,6 +6,7 @@
 #include <vector>
 #include <tuple>
 #include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -13,6 +14,9 @@ using namespace std;
 #include "StorageManagement.h"
 #include "MainMenuManagement.h"
 #include "ConvertionsSystem.h"
+
+vector<int> customeresId;
+int currentCart=0;
 
 vector<string> filter(string filename) {
     int val;
@@ -66,14 +70,37 @@ vector<string> filter(string filename) {
     return words;
 }
 
-string addToCartById(vector<int> Ides, vector<int> Quantities){
-    string toCart;
-    for(int i=0; i<Ides.size();i++){
-        if(Quantities[i] == 0)
-            continue;
-        //CurrentCart.push_back(make_tuple(trim(get<0>(getProductNameById(Ides[i]))) , trim(numToStr(get<1>(getProductNameById(Ides[i])) * Quantities[i])) , trim(numToStr(Quantities[i]))));
+int customerId(){
+    ifstream customeresFile;
+    customeresFile.open("Customers.csv");
+
+    while(customeresFile.good()){
+        string ID="";
+        getline(customeresFile, ID, ',');
+        customeresId.push_back(strToInt(ID));
     }
-    return "null";
+    customeresFile.close();
+    auto Id = *max_element(begin(customeresId), end(customeresId));
+    customeresId.push_back(Id + 1);
+
+    ofstream CustomeresFile;
+    CustomeresFile.open("Customers.csv", ios::app);
+    CustomeresFile << Id + 1;
+    CustomeresFile.close();
+
+    return Id + 1;
+}
+
+void picNewCart(){
+    ofstream newFile;
+    int id=numToStr(customeresId());
+    newFile.open(id + ".csv");
+    currentCart = id;
+}
+
+void addToCartById(int ID, int Quantity){
+    string toCart;
+    //''
 }
 
 bool quantityCheck(int ID/*65*/, int Quantity/*10*/){
@@ -94,4 +121,4 @@ bool quantityCheck(int ID/*65*/, int Quantity/*10*/){
     return false;
 }
 
-/**/
+

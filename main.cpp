@@ -14,7 +14,9 @@ using namespace std;
 int main() {
     //initlize();
 
-    cout << quantityCheck(65, 10);
+    cout << customerId() << endl;
+
+    //cout << quantityCheck(65, -1);
     return 0;
 }
 
