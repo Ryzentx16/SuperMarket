@@ -14,10 +14,10 @@ using namespace std;
 #include "CartManagement.h"
 
 int main() {
-    //initlize();
+    initlize();
 
-    picNewCart();
-    addToCartById(64, 1);
+    //picNewCart();
+    //addToCartById(64, 1);
 
     return 0;
 }

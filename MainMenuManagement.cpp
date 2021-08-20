@@ -14,6 +14,7 @@ using namespace std;
 
 #include "StorageManagement.h"
 #include "MainMenuManagement.h"
+#include "CartManagement.h"
 #include "ConvertionsSystem.h"
 
 string trim(string str) {
@@ -107,13 +108,23 @@ int Shopping(){
     vector<tuple<int, string, double, int>> storage = getStorage();
     int selectedId=0;
 
+    startOver:
+    printMenu(1,0);
+
     cout << "Please Type Id of Product To Select it: ";
     cin >> selectedId;
 
-    cout << get<0>(getProductNameById(selectedId));
+    cout << get<0>(getProductNameById(selectedId)) << endl;
 
-    cout << "Add To Cart (y or n): ";
-    //(cin == 'y') ? ;
+    cout << "Add To Cart ([Type The Quantity] or n): ";
+    string answer;
+    cin >> answer;
+
+    if(strToInt(answer) >= 0){
+        addToCartById(selectedId, strToInt(answer));
+    }else if(answer == "n"){
+        goto startOver;
+    }
 
     // FIXME (user#1#06/28/21): how we do decress the quantity
 
@@ -124,7 +135,6 @@ int Shopping(){
 int initlize(){
     TheShow("SuperMarket");
     Sleep(2000);
-    printMenu(1,0);
     Shopping();
     return 1;
 }
