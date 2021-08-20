@@ -12,10 +12,9 @@ using namespace std;
 #include "CartManagement.h"
 
 int main() {
-    //initlize();
+    initlize();
 
-    quantityCheck(65, 10);
-
+    //cout << quantityCheck(65, 10);
     return 0;
 }
 
