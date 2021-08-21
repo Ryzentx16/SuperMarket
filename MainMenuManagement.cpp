@@ -127,7 +127,7 @@ void Shopping(){
     cout << "Please Type Id of Product To Select it: ";
     cin >> selectedId;
 
-    cout << get<0>(getProductNameById(selectedId)) << endl;
+    cout << get<0>(getProductById(selectedId)) << endl;
 
     cout << "Add To Cart ([Type The Quantity] or n): ";
     string answer;

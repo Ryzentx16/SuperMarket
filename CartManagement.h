@@ -5,6 +5,7 @@
 #ifndef SUPERMARKET_WITHOUT_OOP__CARTMANAGEMENT_H
 #define SUPERMARKET_WITHOUT_OOP__CARTMANAGEMENT_H
 
+void restoreCustomerMenu(vector<tuple<int, int>> customerCart);
 vector<tuple<int, int>> restoreCustomer(int ID);
 void picNewCart();
 int addToCartById(int ID, int Quantity);

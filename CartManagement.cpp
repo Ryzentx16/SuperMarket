@@ -94,6 +94,15 @@ int getCustomerId(){
     return Id + 1;
 }
 
+void restoreCustomerMenu(vector<tuple<int, int>> customerCart){
+    vector<tuple<int, string, double, int>> cart;
+
+    for(auto product:customerCart){
+        cart.push_back(make_tuple(get<0>(product), getProductById(get<0>(product))));
+        /*Extract Form getProductById()*/
+    }
+}
+
 vector<tuple<int, int>> restoreCustomer(int ID){
     currentCart = ID;
     vector<tuple<int, int>> output;
@@ -103,6 +112,7 @@ vector<tuple<int, int>> restoreCustomer(int ID){
         output.push_back(make_tuple(strToInt(words[i]), strToInt(words[i+1])));
         i += 2;
     }
+    restoreCustomerMenu(output);
     return output;
 }
 
@@ -165,7 +175,7 @@ bool quantityCheck(int ID, int Quantity){
 
     for(auto id:ides){
         if(ID/*65*/ == id){
-            tuple<string, double, int> product = getProductNameById(id);
+            tuple<string, double, int> product = getProductById(id);
             if(get<2>(product) >= Quantity){
                 return true;
             }else if(get<2>(product) < Quantity){

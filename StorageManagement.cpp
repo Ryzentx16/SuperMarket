@@ -124,7 +124,7 @@ vector<int> getProductsId(){
     return Ides;
 }
 
-tuple<string, double, int> getProductNameById(int id){
+tuple<string, double, int> getProductById(int id){
     vector<tuple<int, string, double, int>> storage = getStorage();
     tuple<string, double, int> quickProduct;
 
