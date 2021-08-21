@@ -19,7 +19,8 @@ using namespace std;
 #include "ConvertionsSystem.h"
 
 vector<int> customeresId;
-int currentCart=0;
+vector<tuple<int, string, double, int>> currentCart;
+int currentCartId=0;
 
 vector<string> filter(string filename) {
     int val;
@@ -94,17 +95,54 @@ int getCustomerId(){
     return Id + 1;
 }
 
-void restoreCustomerMenu(vector<tuple<int, int>> customerCart){
+vector<tuple<int, string, double, int>> restoreCustomerMenu(vector<tuple<int, int>> customerCart){
+
     vector<tuple<int, string, double, int>> cart;
 
+    vector<int> ides;
+    vector<string> names;
+    vector<double> prices;
+    vector<int> quantities;
+
     for(auto product:customerCart){
-        cart.push_back(make_tuple(get<0>(product), getProductById(get<0>(product))));
-        /*Extract Form getProductById()*/
+        cart.push_back(make_tuple(get<0>(product), get<0>(getProductById(get<0>(product))), get<1>(getProductById(get<0>(product))), get<1>(product)));
+
+        ides.push_back(get<0>(product));
+        names.push_back(get<0>(getProductById(get<0>(product))));
+        prices.push_back(get<1>(getProductById(get<0>(product))));
+        quantities.push_back(get<1>(product));
     }
+
+
+
+
+
+    int highestLen=0;
+    for (auto name:names)
+        if(name.size() > highestLen) highestLen = name.size();
+
+    cout << "ID" << setw(10) << "Product" << setw(highestLen+5) << "Price" << setw(16) << "Quantity" << endl; // Header
+
+    for(int i = 0; i < names.size(); i++){
+        cout << left << ides[i] << right << setw(3+names[i].size());
+        cout << trim(names[i]) << setw(37-names[i].size());
+
+        if(numToStr(prices[i]).size() <= 3){
+           cout << numToStr(prices[i])+'0' << setw(13);
+        }else{
+           cout << numToStr(prices[i]) << setw(13);
+        }
+
+        cout<< numToStr(quantities[i]) << endl;
+    }
+
+    cout << endl;
+    currentCart = cart;
+    return cart;
 }
 
 vector<tuple<int, int>> restoreCustomer(int ID){
-    currentCart = ID;
+    currentCartId = ID;
     vector<tuple<int, int>> output;
     vector<string> words = filter(numToStr(ID) + ".csv");
 
@@ -112,6 +150,8 @@ vector<tuple<int, int>> restoreCustomer(int ID){
         output.push_back(make_tuple(strToInt(words[i]), strToInt(words[i+1])));
         i += 2;
     }
+
+    cout << "This What You Have From Last Session" << endl;
     restoreCustomerMenu(output);
     return output;
 }
@@ -121,7 +161,7 @@ void picNewCart(){
     string id=numToStr(getCustomerId());
     newFile.open(id + ".csv");
 
-    currentCart = strToInt(id);
+    currentCartId = strToInt(id);
 
     cout << "New Cart Has Been Created ID(Save This For Future Using): " << id << endl;
 }
@@ -161,9 +201,9 @@ int addToCartById(int ID, int Quantity){
 
     /*-----------Add To Cart-----------*/
     ofstream cart;
-    cart.open(numToStr(currentCart) + ".csv" , ios::app);
-    cart << toCart + ',';
-    cout << "Product("<< ID <<") Has Been Added With Quantity: " << Quantity << " To Customer Id: " << currentCart << endl;
+    cart.open(numToStr(currentCartId) + ".csv" , ios::app);
+    cart << '\n' + toCart;
+    cout << "Product("<< ID <<") Has Been Added With Quantity: " << Quantity << " To Customer Id: " << currentCartId << endl;
     cart.close();
     /*-----------Add To Cart-----------*/
 }

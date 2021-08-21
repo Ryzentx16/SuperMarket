@@ -69,18 +69,6 @@ void PrintMenu(int numberOfRaw, int numberOfColumns) {
     vector<int> quantities = getProductsQuantity();
     vector<int> ides = getProductsId();
 
-    /*for(auto x:names)
-        cout << x << endl;
-    cout << endl<<endl;
-
-    for(auto x:prices)
-        cout << x << endl;
-    cout << endl<<endl;
-
-    for(auto x:quantities)
-        cout << x << endl;*/
-
-    //cout << prices[0] << endl << endl;
 
     int highestLen=0;
     for (auto name:names)
@@ -112,6 +100,14 @@ void ExistsOrNew(){
         cout << "Picking New Cart" << endl;
         picNewCart();
         cout << "Have Good Shopping!" <<endl <<endl;
+        Shopping();
+    }else if(answer == 'n'){
+        cout << "Please Type Your ID: ";
+        int id;
+        cin >> id;
+
+        restoreCustomer(id);
+
         Shopping();
     }
 }
