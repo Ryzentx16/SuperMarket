@@ -17,6 +17,8 @@ using namespace std;
 #include "CartManagement.h"
 #include "ConvertionsSystem.h"
 
+bool updateing=false;
+
 string trim(string str) {
   string chars = "\t\n\v\f\r ";
   str.erase(0, str.find_first_not_of(chars));
@@ -98,7 +100,7 @@ void ExistsOrNew(){
     cin >> answer;
     if(answer == 'y'){
         cout << "Picking New Cart" << endl;
-        picNewCart();
+        pickNewCart();
         cout << "Have Good Shopping!" <<endl <<endl;
         Shopping();
     }else if(answer == 'n'){
@@ -107,7 +109,7 @@ void ExistsOrNew(){
         cin >> id;
 
         restoreCustomer(id);
-
+        updateing = true;
         Shopping();
     }
 }
@@ -139,7 +141,9 @@ void Shopping(){
         cin >> answer1;
         if(answer1 == 'y'){
             goto startOverP;
-        }
+
+        }// TODO (user#1#08/21/21): CheckOut Section Start From Here ...
+//
     }
 
 

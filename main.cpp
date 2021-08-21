@@ -14,8 +14,9 @@ using namespace std;
 #include "CartManagement.h"
 
 int main() {
-    initlize();
-
+    //initlize();
+    restoreCustomer(3);
+    fixFileSpam(3);
     //picNewCart();
     //addToCartById(64, 1);
 

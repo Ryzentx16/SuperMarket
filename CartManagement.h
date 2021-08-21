@@ -5,9 +5,11 @@
 #ifndef SUPERMARKET_WITHOUT_OOP__CARTMANAGEMENT_H
 #define SUPERMARKET_WITHOUT_OOP__CARTMANAGEMENT_H
 
+void fixFileSpam(int Id);
+void updateCart(int ID, int newQuantity);
 vector<tuple<int, string, double, int>> restoreCustomerMenu(vector<tuple<int, int>> customerCart);
 vector<tuple<int, int>> restoreCustomer(int ID);
-void picNewCart();
+void pickNewCart();
 int addToCartById(int ID, int Quantity);
 bool quantityCheck(int ID, int Quantity);
 
