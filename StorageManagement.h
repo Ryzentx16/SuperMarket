@@ -12,7 +12,7 @@ vector<string> getProductsName();
 vector<double> getProductsPrice();
 vector<int> getProductsQuantity();
 vector<int> getProductsId();
-void printProducts();
 tuple<string, double, int> getProductNameById(int id);
+void printProducts();
 
 #endif //SUPERMARKET_WITHOUT_OOP__STORAGEMANAGEMENT_H

@@ -63,7 +63,7 @@ void TheShow(const string Text) {
   cout << '+' << RepeatChar(46, '-') << '+' << endl;
 }
 
-void printMenu(int numberOfRaw, int numberOfColumns) {
+void PrintMenu(int numberOfRaw, int numberOfColumns) {
     vector<string> names = getProductsName();
     vector<double> prices = getProductsPrice();
     vector<int> quantities = getProductsQuantity();
@@ -104,13 +104,26 @@ void printMenu(int numberOfRaw, int numberOfColumns) {
     //cout << highestLen;
 }
 
-int Shopping(){
+void ExistsOrNew(){
+    cout << "Are You New (y or n): ";
+    char answer;
+    cin >> answer;
+    if(answer == 'y'){
+        cout << "Picking New Cart" << endl;
+        picNewCart();
+        cout << "Have Good Shopping!" <<endl <<endl;
+        Shopping();
+    }
+}
+
+void Shopping(){
     vector<tuple<int, string, double, int>> storage = getStorage();
     int selectedId=0;
 
-    startOver:
-    printMenu(1,0);
+    startOverP:
+    PrintMenu(1,0);
 
+    startOver:
     cout << "Please Type Id of Product To Select it: ";
     cin >> selectedId;
 
@@ -120,23 +133,29 @@ int Shopping(){
     string answer;
     cin >> answer;
 
-    if(strToInt(answer) >= 0){
+    if(answer == "n"){
+        goto startOverP;
+    }else if(strToInt(answer) >= 0){
+        //cout << strToInt(answer) << endl;
         addToCartById(selectedId, strToInt(answer));
-    }else if(answer == "n"){
-        goto startOver;
+        cout << "Select New Product (y or n): ";
+        char answer1;
+        cin >> answer1;
+        if(answer1 == 'y'){
+            goto startOverP;
+        }
     }
+
 
     // FIXME (user#1#06/28/21): how we do decress the quantity
 
 
-    return 1;
 }
 
-int initlize(){
+void initlize(){
     TheShow("SuperMarket");
     Sleep(2000);
-    Shopping();
-    return 1;
+    ExistsOrNew();
 }
 
 

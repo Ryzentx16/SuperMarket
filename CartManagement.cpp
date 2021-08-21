@@ -5,6 +5,8 @@
 #include <fstream>
 #include <vector>
 #include <tuple>
+#include <map>
+#include <list>
 #include <algorithm>
 #include <bits/stdc++.h>
 #include <winuser.h>
@@ -71,7 +73,7 @@ vector<string> filter(string filename) {
     return words;
 }
 
-int customerId(){
+int getCustomerId(){
     ifstream customeresFile;
     customeresFile.open("Customers.csv");
 
@@ -92,35 +94,71 @@ int customerId(){
     return Id + 1;
 }
 
+vector<tuple<int, int>> restoreCustomer(int ID){
+    currentCart = ID;
+    vector<tuple<int, int>> output;
+    vector<string> words = filter(numToStr(ID) + ".csv");
+
+    for(int i = 0; i < words.size();){
+        output.push_back(make_tuple(strToInt(words[i]), strToInt(words[i+1])));
+        i += 2;
+    }
+    return output;
+}
+
 void picNewCart(){
     ofstream newFile;
-    string id=numToStr(customerId());
+    string id=numToStr(getCustomerId());
     newFile.open(id + ".csv");
 
     currentCart = strToInt(id);
 
-    cout << "Current Cart:" << id << endl;
+    cout << "New Cart Has Been Created ID(Save This For Future Using): " << id << endl;
 }
 
-void addToCartById(int ID, int Quantity){
-    if(quantityCheck(ID, Quantity)){
-        string toCart = numToStr(ID) + ',' + numToStr(Quantity);
+int addToCartById(int ID, int Quantity){
+    /*Error 2: Wrong ID*/
+    /*Error 1: Quantity Request Over Storage Quantity*/
+    vector<int> Ides = getProductsId();
+    vector<int> Quantities = getProductsQuantity();
+    bool error2=false;
+    bool error1=false;
 
-        /*-----------Add To Cart-----------*/
-        ofstream cart;
-        cart.open(numToStr(currentCart) + ".csv" , ios::app);
-        cart << toCart + ',';
-        cout << "Product("<< ID <<") Has Been Added With Quantity: " << Quantity << endl;
-        cart.close();
-        /*-----------Add To Cart-----------*/
-
-    }else{
-        cout << "Adding Process Failed" << endl;
-        int msgboxID=MessageBox(NULL, (LPCSTR)"The Quantity Request is Over Then in Storage.\n(Nothing Added)", (LPCSTR)"WARNING", MB_ICONWARNING | MB_OK);
+    for(auto id:Ides){
+        if(id != ID){
+            error2 = true;
+        }else if(id == ID){
+            error2 = false;
+            break;
+        }
     }
+
+    if(quantityCheck(ID, Quantity)){
+        error1=false;
+    }else{
+        error1=true;
+    }
+
+    if(error2){
+        cout << "Error 2: Wrong ID";
+        return 2;
+    }else if(error1){
+        cout << "Error 1: Quantity Request Over Storage Quantity";
+        return 1;
+    }
+
+    string toCart = numToStr(ID) + ',' + numToStr(Quantity);
+
+    /*-----------Add To Cart-----------*/
+    ofstream cart;
+    cart.open(numToStr(currentCart) + ".csv" , ios::app);
+    cart << toCart + ',';
+    cout << "Product("<< ID <<") Has Been Added With Quantity: " << Quantity << " To Customer Id: " << currentCart << endl;
+    cart.close();
+    /*-----------Add To Cart-----------*/
 }
 
-bool quantityCheck(int ID/*65*/, int Quantity/*10*/){
+bool quantityCheck(int ID, int Quantity){
     vector<tuple<int, string, double, int>> storage = getStorage();
     vector<int> quantities = getProductsQuantity();
     vector<int> ides = getProductsId();

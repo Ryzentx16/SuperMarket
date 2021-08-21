@@ -66,8 +66,6 @@ vector<string> filter() {
     return words;
 }
 
-//vector<string> words = filter();
-
 vector<tuple<int, string, double, int>> products(){
 
     vector<tuple<int, string, double, int>> output;
@@ -80,8 +78,6 @@ vector<tuple<int, string, double, int>> products(){
 
     return output;
 }
-
-//map<int, tuple<string, double, int>> storage;
 
 vector<tuple<int, string, double, int>> getStorage(){
     /*for(auto tp : products()){
