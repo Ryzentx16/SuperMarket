@@ -19,7 +19,7 @@ using namespace std;
 #include "ConvertionsSystem.h"
 
 vector<int> customeresId;
-vector<tuple<int, int>> currentCart;
+map<int, int> currentCart;
 int currentCartId=0;
 
 vector<string> filter(string filename) {
@@ -113,20 +113,27 @@ void fixFileSpam(){
 }
 
 void fixFileSpam(int Id){
-    /*vector<string> words = filter(numToStr(Id)+".csv");
-    vector<tuple<int, int>> cart;
+    vector<string> words = filter(numToStr(Id)+".csv");
+    //vector<tuple<int, int>> cart;
+    map<int, int> cart;
     for(int i=0; i < words.size();){
-        cart.push_back(make_tuple(strToInt(words[i]), strToInt(words[i+1])));
+        //cart.push_back(make_tuple(strToInt(words[i]), strToInt(words[i+1])));
+        cart[strToInt(words[i])] = strToInt(words[i+1]);
         i += 2;
-    }*/
+    }
+
+    bool isDone=false;
+    while(!isDone){
+
+    }
 
     ofstream tempFile;
     tempFile.open(numToStr(Id) + "temp.csv", ios::app);
-    for(auto product:currentCart){
+    /*for(auto product:cart){
         string toCart;
         toCart = get<0>(product) + ',' + get<1>(product);
         tempFile << toCart + '\n';
-    }
+    }*/
     tempFile.close();
 }
 
@@ -144,6 +151,8 @@ void updateCart(int ID, int newQuantity){
     for(auto product:newCart){
         cout << get<0>(product) << " " << get<1>(product) <<endl;
     }
+
+// TODO (user#1#08/23/21): Update Cart
 }
 
 vector<tuple<int, string, double, int>> restoreCustomerMenu(vector<tuple<int, int>> customerCart){
@@ -194,16 +203,19 @@ vector<tuple<int, string, double, int>> restoreCustomerMenu(vector<tuple<int, in
 vector<tuple<int, int>> restoreCustomer(int ID){
     currentCartId = ID;
     vector<tuple<int, int>> output;
+    map<int, int> cart;
     vector<string> words = filter(numToStr(ID) + ".csv");
 
     for(int i = 0; i < words.size();){
         output.push_back(make_tuple(strToInt(words[i]), strToInt(words[i+1])));
+        cart[strToInt(words[i])] += strToInt(words[i+1]);
         i += 2;
     }
 
     cout << "This What You Have From Last Session" << endl;
-    currentCart = output;
+    currentCart = cart;
     restoreCustomerMenu(output);
+    cout << "End"<<endl;
     return output;
 }
 
@@ -248,16 +260,27 @@ int addToCartById(int ID, int Quantity){
         return 1;
     }
 
-    string toCart = numToStr(ID) + ',' + numToStr(Quantity);
-
     /*-----------Add To Cart-----------*/
-    currentCart.push_back(make_tuple(ID, Quantity));
+    currentCart[ID] += Quantity;
+
+    string toCart;
+    for(auto product:currentCart){
+        if(ID == product.first){
+
+            toCart = product.first + ',' + product.second;
+            cout << numToStr(product.first) + ',' + numToStr(product.second) << endl;
+            break;
+        }
+    }
+
     ofstream cart;
     cart.open(numToStr(currentCartId) + ".csv" , ios::app);
     cart << '\n' + toCart;
     cout << "Product("<< ID <<") Has Been Added With Quantity: " << Quantity << " To Customer Id: " << currentCartId << endl;
     cart.close();
     /*-----------Add To Cart-----------*/
+
+    return 0;
 }
 
 bool quantityCheck(int ID, int Quantity){
@@ -277,5 +300,4 @@ bool quantityCheck(int ID, int Quantity){
     }
     return false;
 }
-
 

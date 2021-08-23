@@ -73,5 +73,5 @@ string numToStr(int num){
     for (int i = 0; i < result.size() / 2; i++)
         swap(result[i], result[result.size() - i - 1]);
 */
-    return _trim(to_string(num));
+    return to_string(num);
 }

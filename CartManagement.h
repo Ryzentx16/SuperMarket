@@ -6,7 +6,7 @@
 #define SUPERMARKET_WITHOUT_OOP__CARTMANAGEMENT_H
 
 void fixFileSpam(int Id);
-void updateCart(int ID, int newQuantity);
+//void updateCart(int ID, int newQuantity);
 vector<tuple<int, string, double, int>> restoreCustomerMenu(vector<tuple<int, int>> customerCart);
 vector<tuple<int, int>> restoreCustomer(int ID);
 void pickNewCart();
